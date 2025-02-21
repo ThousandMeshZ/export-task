@@ -3,9 +3,11 @@ package com.tmesh.exporttask.common.thread;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author : TMesh
@@ -25,11 +27,19 @@ public class AsynSetRowDataThreadTask extends CommonSetRowDataThreadTask {
         super(fileName, sheet, list, keys, lastNumber, startRow, endRow, offset);
     }
 
+    /**
+     * 任务执行，没有指定线程池，可以重写该方法，实现需要的功能 
+     **/
+    @Override
+    public CompletableFuture<Integer> runFuture() {
+        return super.runFuture();
+    }
 
     /**
-     * 可以重写 run 方法，实现需要的功能 
+     * 任务执行，指定线程池，可以重写该方法，实现需要的功能 
      **/
-//    @Override
-//    public void run() {
-//    }
+    @Override
+    public CompletableFuture<Integer> runFuture(ThreadPoolTaskExecutor executor) {
+        return super.runFuture(executor);
+    }
 }

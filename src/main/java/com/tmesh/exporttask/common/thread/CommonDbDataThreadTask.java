@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * @author : TMesh
  * @version : 1.0.0
- * @description : 通用异步设置数据任务
+ * @description : 通用异步查询任务
  * @updateUser : TMesh
  */
 @Component

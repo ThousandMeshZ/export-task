@@ -8,6 +8,7 @@ import com.tmesh.exporttask.common.excel.ExportPOIUtils;
 import com.tmesh.exporttask.common.thread.utils.DataThreadPoolExecutorUtils;
 import com.tmesh.exporttask.common.thread.utils.ThreadPoolExecutorUtils;
 import com.tmesh.exporttask.entity.ExportTask;
+import com.tmesh.exporttask.entity.UserEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.logging.log4j.LogManager;
@@ -291,7 +292,7 @@ public class CommonExportThreadTask<T> implements ExportThreadTask {
     }
     
     /**
-     * 数据库数据查询操作，有其他需求可以重写
+     * 数据库数据查询操作
      **/
     protected List<Map<String, Object>> dbDataHandle(ExportTask exportTask, Sheet sheet, QueryWrapper<T> newQueryWapper, List<CompletableFuture<Object>> taskList) {
         // 添加限制条件
@@ -300,7 +301,7 @@ public class CommonExportThreadTask<T> implements ExportThreadTask {
             AsynDbThreadTask task = new AsynDbThreadTask(
                     this.fileName, sheet, this.limit, this.module, this.mapper, newQueryWapper, exportTask, this.lastNumber, ExportThreadTask.OFFSET
             );
-            CompletableFuture future = task.runFuture(DataThreadPoolExecutorUtils.SetDataThreadPoolSingleton.getInstance());
+            CompletableFuture<Object> future = task.runFuture(DataThreadPoolExecutorUtils.SetDataThreadPoolSingleton.getInstance());
             this.lastNumber += ExportThreadTask.OFFSET;
             taskList.add(future);
             return null;
@@ -318,7 +319,7 @@ public class CommonExportThreadTask<T> implements ExportThreadTask {
 
 
     /**
-     * 数据写入excel实体，有其他需求可以重写
+     * 数据写入excel实体
      **/
     protected void dataWrite(ExportTask exportTask, Sheet sheet, List<Map<String, Object>>resultList, List<CompletableFuture<Integer>> taskList) throws IOException, InterruptedException {
         this.limit += ExportThreadTask.OFFSET;
@@ -330,7 +331,7 @@ public class CommonExportThreadTask<T> implements ExportThreadTask {
             AsynSetRowDataThreadTask task = new AsynSetRowDataThreadTask(
                     this.fileName, sheet, resultList, this.keys, this.lastNumber, this.lastNumber + 1, this.lastNumber + ExportThreadTask.OFFSET, ExportThreadTask.OFFSET
             );
-            CompletableFuture future = task.runFuture(DataThreadPoolExecutorUtils.SetDataThreadPoolSingleton.getInstance());
+            CompletableFuture<Integer> future = task.runFuture(DataThreadPoolExecutorUtils.SetDataThreadPoolSingleton.getInstance());
             taskList.add(future);
             this.lastNumber += resultList.size();
         } else {
@@ -374,7 +375,7 @@ public class CommonExportThreadTask<T> implements ExportThreadTask {
                         AsynSetRowDataThreadTask task = new AsynSetRowDataThreadTask(
                                 this.fileName, finalSheet, mapList, this.keys, rowNum, rowNum, rowNum + ExportThreadTask.OFFSET, ExportThreadTask.OFFSET
                         );
-                        CompletableFuture futureExcel = task.runFuture(DataThreadPoolExecutorUtils.SetDataThreadPoolSingleton.getInstance());
+                        CompletableFuture<Integer> futureExcel = task.runFuture(DataThreadPoolExecutorUtils.SetDataThreadPoolSingleton.getInstance());
                         this.lastNumber += ExportThreadTask.OFFSET;
                         taskList.add(futureExcel);
                     } else {
