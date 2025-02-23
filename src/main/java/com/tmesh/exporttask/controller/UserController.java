@@ -31,7 +31,9 @@ public class UserController {
         // TODO 系统的获取用户信息
         // String userName = user.getUserName;
         for (int i = 0; i < 3; i++) {
+            // 不使用注解的方式
 //            this.userSerivce.exportList(userExportTaskDto);
+            // 使用注解的方式
             this.userSerivce.exportListByAnnotation(userExportTaskDto);
         }
         return jsonObject;

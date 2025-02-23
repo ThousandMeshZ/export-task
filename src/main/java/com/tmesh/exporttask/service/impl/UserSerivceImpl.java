@@ -3,12 +3,7 @@ package com.tmesh.exporttask.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.tmesh.exporttask.common.excel.ExportPOIUtils;
-import com.tmesh.exporttask.common.thread.AsynDbThreadTask;
-import com.tmesh.exporttask.common.thread.AsynSetRowDataThreadTask;
 import com.tmesh.exporttask.common.thread.CommonExportThreadTask;
-import com.tmesh.exporttask.common.thread.ExportThreadTask;
-import com.tmesh.exporttask.common.thread.utils.DataThreadPoolExecutorUtils;
 import com.tmesh.exporttask.common.thread.utils.ThreadPoolExecutorUtils;
 import com.tmesh.exporttask.controller.UserController;
 import com.tmesh.exporttask.dto.UserExportTaskDto;
@@ -18,20 +13,16 @@ import com.tmesh.exporttask.mapper.UserMapper;
 import com.tmesh.exporttask.service.UserSerivce;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.*;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author : TMesh
@@ -89,7 +80,7 @@ public class UserSerivceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
 }
 
 /**
- * 导出任务线程，继承自CommonExportThreadTask
+ * 导出任务线程，继承自CommonExportThreadTask，这里为了方便写则作为内部类在服务实现类里面。可以单独作为一个任务类提出去
  **/
 class UserExportThreadTask extends CommonExportThreadTask<UserEntity> {
 

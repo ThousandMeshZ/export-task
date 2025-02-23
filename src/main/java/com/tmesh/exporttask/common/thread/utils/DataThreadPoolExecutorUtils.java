@@ -7,7 +7,9 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author : TMesh
@@ -81,6 +83,20 @@ public class DataThreadPoolExecutorUtils {
          * @return: java.util.concurrent.ThreadPoolExecutor
          * @author: TMesh
          * @Version: 1.0
+         */
+        /**
+         * ThreadPoolTaskExecutor 用法：
+         * corePoolSize：线程池维护线程最小的数量，默认为1
+         * maxPoolSize：线程池维护线程最大数量，默认为Integer.MAX_VALUE
+         * keepAliveSeconds：(maxPoolSize-corePoolSize)部分线程空闲最大存活时间，默认存活时间是60s
+         * queueCapacity：阻塞任务队列的大小，默认为Integer.MAX_VALUE，默认使用LinkedBlockingQueue
+         * allowCoreThreadTimeOut：设置为true的话，keepAliveSeconds 参数设置的有效时间对 corePoolSize 线程也有效，默认是flase
+         * threadFactory：：用于设置创建线程的工厂，可以通过线程工厂给每个创建出来的线程设置更有意义的名字。使用开源框架 guava 提供的 ThreadFactoryBuilder 可以快速给线程池里的线程设置有意义的名字
+         * rejectedExecutionHandler：拒绝策略，当队列 workQueue 和线程池 maxPoolSize 都满了，说明线程池处于饱和状态，那么必须采取一种策略处理提交的新任务。这个策略默认情况下是 AbortPolicy，表示无法处理新任务时抛出异常，有以下四种策略，当然也可以根据实际业务需求类实现 RejectedExecutionHandler 接口实现自己的处理策略
+         * 1.AbortPolicy：丢弃任务，并且抛出 RejectedExecutionException 异常
+         * 2.DiscardPolicy：丢弃任务，不处理，不抛出异常
+         * 3.CallerRunsPolicy：直接在 execute 方法的调用线程中运行被拒绝的任务
+         * 4.DiscardOldestPolicy：丢弃队列中最前面的任务，然后重新尝试执行任务
          */
         public static ThreadPoolTaskExecutor getInstance() {
             if (instance == null) {

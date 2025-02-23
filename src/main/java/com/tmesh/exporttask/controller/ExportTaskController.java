@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName: ExportTaskController
@@ -64,7 +65,7 @@ public class ExportTaskController {
     @PostMapping("/delete")
     public JSONObject delete(Map<String, Object> map) {
         String id = (String) map.get("id");
-        this.exportTaskService.deleteByTaskId(id);
+        this.exportTaskService.removeById(id);
         JSONObject jsonObject =  new JSONObject();
         // TODO 操作记录记录
 //        OperationLogRecorder.insert(user, "删除任务task成功...userId={}", "删除", id);

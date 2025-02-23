@@ -8,14 +8,13 @@ import com.tmesh.exporttask.common.excel.ExportPOIUtils;
 import com.tmesh.exporttask.common.thread.utils.DataThreadPoolExecutorUtils;
 import com.tmesh.exporttask.common.thread.utils.ThreadPoolExecutorUtils;
 import com.tmesh.exporttask.entity.ExportTask;
-import com.tmesh.exporttask.entity.UserEntity;
+import com.tmesh.exporttask.service.ExportTaskService;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import com.tmesh.exporttask.service.ExportTaskService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -323,7 +322,7 @@ public class CommonExportThreadTask<T> implements ExportThreadTask {
      **/
     protected void dataWrite(ExportTask exportTask, Sheet sheet, List<Map<String, Object>>resultList, List<CompletableFuture<Integer>> taskList) throws IOException, InterruptedException {
         this.limit += ExportThreadTask.OFFSET;
-        // 判断是否开启异步写入
+        // 判断是否开启异步数据库查询
         if (this.useDbAsyn) {
             return;
         }
