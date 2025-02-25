@@ -32,7 +32,7 @@ public class ThreadPoolExecutorUtils {
      **/
     @Bean("taskExecutor")
     public Executor taskExecutor() {
-        int i = Runtime.getRuntime().availableProcessors();
+        int i = Runtime.getRuntime().availableProcessors(); // CPU核数 = Runtime.getRuntime().availableProcessors()
         System.out.println("系统最大线程数  ： " + i);
         ThreadPoolExecutor executor = new ThreadPoolExecutor(2, 3, 5000, TimeUnit.SECONDS, blockingQueue, Executors.defaultThreadFactory(), new ThreadPoolExecutor.CallerRunsPolicy());
         return executor;
