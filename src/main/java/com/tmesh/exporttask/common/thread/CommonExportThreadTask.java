@@ -357,12 +357,12 @@ public class CommonExportThreadTask<T> implements ExportThreadTask {
                                    Sheet sheet, ExportTask exportTask, long begTimeLDb) throws IOException {
         CompletableFuture[] taskDbArray = new CompletableFuture[taskDbList.size()];
         Sheet finalSheet = sheet;
-
-        CompletableFuture.allOf(taskDbList.toArray(taskDbArray)).join();
+        taskDbList.toArray(taskDbArray);
+        CompletableFuture.allOf(taskDbArray).join();
         exportTask.setDbEndDate(new Date());
         exportTask.setDbTimeCost(exportTask.getDbTimeCost() + System.currentTimeMillis() - begTimeLDb);
 
-        CompletableFuture.allOf(taskDbList.toArray(taskDbArray)).thenApply(v -> {
+        CompletableFuture.allOf(taskDbArray).thenApply(v -> {
             for(CompletableFuture future: taskDbList) {
                 try {
                     long s = System.currentTimeMillis();;
@@ -407,10 +407,11 @@ public class CommonExportThreadTask<T> implements ExportThreadTask {
     protected void useAsynHandle(List<CompletableFuture<Integer>> taskList,
                                  ExportTask exportTask, long begTimeL) {
         CompletableFuture[] taskArray = new CompletableFuture[taskList.size()];
-        CompletableFuture.allOf(taskList.toArray(taskArray)).join();
+        taskList.toArray(taskArray);
+        CompletableFuture.allOf(taskArray).join();
         exportTask.setExcelWriteTimeCost(exportTask.getExcelWriteTimeCost() + System.currentTimeMillis() - begTimeL);
         exportTaskService.updateById(exportTask);
-        CompletableFuture.allOf(taskList.toArray(taskArray)).thenApply(v -> {
+        CompletableFuture.allOf(taskArray).thenApply(v -> {
             for(CompletableFuture future: taskList) {
                 try {
                     Integer sum = (Integer) future.get();
